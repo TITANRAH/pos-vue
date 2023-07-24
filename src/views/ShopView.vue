@@ -1,0 +1,46 @@
+
+<script setup>
+import {storeToRefs} from 'pinia'
+import MainNav from '../components/MainNav.vue';
+import { useProductStores } from '../stores/products';
+import ProductCard from '../components/ProductCard.vue';
+
+
+const products = useProductStores()
+// mantengo la reactividad asi 
+const {filteredProducts, noResult} = storeToRefs(products)
+
+
+</script>
+<template>
+    <div>
+        <MainNav/>
+
+        <main class="red pt-10 lg:flex lg:h-screen lg:overflow-y-hidden">
+            <div class="lg:w-2/3 lg:screen lg:overflow-y-scroll pt-10 pb-32 px-10">
+                <p v-if="noResult" class="text-center text-4xl">No hay Productos</p>
+                <div 
+                    v-else
+                    class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-5"
+                    >
+                    <ProductCard
+                        v-for="product in filteredProducts"
+                        :key="product.id"
+                        :product="product"
+                    />
+                </div>
+            </div>
+
+            <aside class="lg:w-1/3 lg:screen lg:overflow-y-scroll pt-10 pb-32 px-10" >
+                <p>Carrito aquí</p>
+            </aside>
+        </main>
+    </div>
+
+
+</template>
+
+<style>
+
+</style>
+
