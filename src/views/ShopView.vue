@@ -1,7 +1,7 @@
 
 <script setup>
 import {storeToRefs} from 'pinia'
-import MainNav from '../components/MainNav.vue';
+import MainNav from '../components/mainnav.vue';
 import { useProductStores } from '../stores/products';
 import ProductCard from '../components/ProductCard.vue';
 import ShoppingCart from '../components/ShoppingCart.vue';
