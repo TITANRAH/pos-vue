@@ -4,6 +4,8 @@ import {storeToRefs} from 'pinia'
 import MainNav from '../components/MainNav.vue';
 import { useProductStores } from '../stores/products';
 import ProductCard from '../components/ProductCard.vue';
+import ShoppingCart from '../components/ShoppingCart.vue';
+
 
 
 const products = useProductStores()
@@ -17,7 +19,7 @@ const {filteredProducts, noResult} = storeToRefs(products)
         <MainNav/>
 
         <main class="red pt-10 lg:flex lg:h-screen lg:overflow-y-hidden">
-            <div class="lg:w-2/3 lg:screen lg:overflow-y-scroll pt-10 pb-32 px-10">
+            <div class="lg:w-2/3 lg:screen lg:overflow-y-scroll py-24 px-10">
                 <p v-if="noResult" class="text-center text-4xl">No hay Productos</p>
                 <div 
                     v-else
@@ -31,8 +33,8 @@ const {filteredProducts, noResult} = storeToRefs(products)
                 </div>
             </div>
 
-            <aside class="lg:w-1/3 lg:screen lg:overflow-y-scroll pt-10 pb-32 px-10" >
-                <p>Carrito aquí</p>
+            <aside class="lg:w-1/3 lg:screen lg:overflow-y-scroll py-24  px-10" >
+                <ShoppingCart/>
             </aside>
         </main>
     </div>

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import {computed} from 'vue'
+import {computed, ref} from 'vue'
 import { useFirestore, useCollection, useFirebaseStorage } from "vuefire";
 import { collection, addDoc, getDoc, where, limit, orderBy, query, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import {ref as storageRef, deleteObject} from 'firebase/storage'
@@ -10,6 +10,8 @@ export const useProductStores = defineStore('products', ()=>{
     // tanto para firestore con el storage donde guardo las fotos
     const db = useFirestore()
     const storage = useFirebaseStorage()
+
+    const selectedCategory = ref(1)
 
     const categories = [
         {id: 1, name: 'Sudaderas'},
@@ -101,13 +103,16 @@ export const useProductStores = defineStore('products', ()=>{
 
 
     const filteredProducts = computed(()=>{
-        return productsCollection.value
+        // el valor que le pase a selectedCategory es 1 por loq ue dice filtra los productos por categoria 1 
+        return productsCollection.value.filter(product => product.category === selectedCategory.value)
     })
 
     return {
         createProduct,
         categoryOptions,
         productsCollection,
+        categories,
+        selectedCategory,
         noResult,
         updateProduct,
         deleteProduct,
