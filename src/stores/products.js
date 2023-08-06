@@ -104,7 +104,9 @@ export const useProductStores = defineStore('products', ()=>{
 
     const filteredProducts = computed(()=>{
         // el valor que le pase a selectedCategory es 1 por loq ue dice filtra los productos por categoria 1 
-        return productsCollection.value.filter(product => product.category === selectedCategory.value)
+        return productsCollection.value
+        .filter(product => product.category === selectedCategory.value)
+        .filter(product => product.availability > 0)
     })
 
     return {

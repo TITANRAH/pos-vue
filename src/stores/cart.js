@@ -2,13 +2,15 @@ import { ref, computed, watchEffect } from "vue";
 import { defineStore } from "pinia";
 import { useCuponStore } from "./cupons";
 
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, runTransaction, doc } from "firebase/firestore";
 import { useFirestore } from "vuefire";
 import { getCurrentDate } from "../helpers";
 
 export const useCartStore = defineStore("cart", () => {
   const cupon = useCuponStore();
   const db = useFirestore();
+
+  console.log(db)
   const items = ref([]);
   const subtotal = ref(0);
   const taxes = ref(0);
@@ -79,6 +81,8 @@ export const useCartStore = defineStore("cart", () => {
   }
 
   async function checkout() {
+
+    console.log('chyeck')
     try {
       await addDoc(collection(db, "sales"), {
 
@@ -95,8 +99,23 @@ export const useCartStore = defineStore("cart", () => {
         date: getCurrentDate(),
       });
 
+      // resstar la cantidad de lo disponible
+      // map regresa un arreglo nuevo
+      // foreach itera sobnre los elementos como map pero no regresa un nuevo arreglo
+      items.value.forEach(async (item)=>{
+      console.log(item)
+        const productRef = doc(db, 'products', item.id)
+        await runTransaction(db, async(transaction)=>{
+
+          const currentProduct = await transaction.get(productRef)
+          // si al comprar hay 3 elementos (currentProduct.data()) y compro 2 availability regresara 1
+          const availability = currentProduct.data().availability - item.quantity
+          transaction.update(productRef, { availability})
+        })
+      })
       $reset()
       cupon.$reset()
+
 
     } catch(error) {
       console.log(error);

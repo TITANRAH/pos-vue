@@ -1,14 +1,22 @@
 
 /** @type {import('tailwindcss').Config} */
+
+const colors = require('tailwindcss/colors')
+// console.log(colors);
 module.exports = {
   content: [
 
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
-    "./formkit_config.js"
+    "./formkit_config.js",
+    './node_modules/vue-tailwind-datepicker/**/*.js'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'vtd-primary': colors.indigo
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/forms')
